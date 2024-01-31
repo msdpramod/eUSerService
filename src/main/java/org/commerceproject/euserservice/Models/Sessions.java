@@ -1,4 +1,4 @@
-package Models;
+package org.commerceproject.euserservice.Models;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
