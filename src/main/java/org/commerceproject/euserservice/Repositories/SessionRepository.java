@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface SessionRepository extends JpaRepository<Sessions, Long> {
+public interface SessionRepository extends JpaRepository<Sessions, UUID> {
 
-    Optional<SessionRepository> findAllByTokenAndUser_Id(String Token, Long userId);
+    Optional<Sessions> findAllByTokenAndUser_Id(String Token, UUID userId);
 }

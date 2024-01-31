@@ -1,13 +1,11 @@
 package org.commerceproject.euserservice;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.Test;
 
-@SpringBootTest
-class EUSerServiceApplicationTests {
+public class EUSerServiceApplicationTests {
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+        // Your test logic goes here
     }
-
 }

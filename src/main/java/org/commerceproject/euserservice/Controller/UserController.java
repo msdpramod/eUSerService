@@ -17,7 +17,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") UUID userid){
         UserDTO userDTO = userService.getUserById(userid);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
