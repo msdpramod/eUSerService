@@ -1,5 +1,6 @@
 package org.commerceproject.euserservice.Models;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
@@ -9,7 +10,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Getter@Setter
+@Getter@Setter@Entity
 public class Sessions {
     private String token;
     @ManyToOne

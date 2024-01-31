@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -20,7 +22,7 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public UserDTO getUserById(Long userId){
+    public UserDTO getUserById(UUID userId){
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isEmpty()){
             return null;
@@ -28,7 +30,7 @@ public class UserService {
         return UserDTO.from(userOptional.get());
 
     }
-    public UserDTO setUserRoles(Long userId,Long roleId){
+    public UserDTO setUserRoles(UUID userId, List<UUID> roleId){
         Optional<User> userOptional = userRepository.findById(userId);
         List<Roles> rolesOptional = roleRepository.findAllByIdIn(roleId);
         if(userOptional.isEmpty()){
