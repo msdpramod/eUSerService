@@ -1,7 +1,9 @@
 package org.commerceproject.euserservice.Service;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.MacAlgorithm;
+
 import org.commerceproject.euserservice.DTOs.UserDTO;
 import org.commerceproject.euserservice.Exceptions.InvalidCredentialException;
 import org.commerceproject.euserservice.Exceptions.InvalidTokenException;
@@ -20,8 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMapAdapter;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.time.LocalDate;
 import java.util.*;
+
 
 @Service
 public class AuthService {
@@ -98,16 +103,29 @@ public class AuthService {
 
     public ResponseEntity<Void> logout(String token, UUID userId) {
         // validations -> token exists, token is not expired, user exists else throw an exception
+//        Optional<Sessions> sessionOptional = sessionRepository.findAllByTokenAndUser_Id(token, userId);
+//        if (sessionOptional.isEmpty()) {
+//            return null; //TODO throw exception here
+//        }
+//        Sessions session = sessionOptional.get();
+//        session.setStatus(SessionStatus.INACTIVE);
+//        sessionRepository.save(session);
+//        return ResponseEntity.ok().build();
         Optional<Sessions> sessionOptional = sessionRepository.findAllByTokenAndUser_Id(token, userId);
         if (sessionOptional.isEmpty()) {
-            return null; //TODO throw exception here
+            throw new InvalidTokenException("Token not found for user");
         }
+
+        // TODO: Check if the token is not expired
+//        if (!validate(token,userId).equals(SessionStatus.ACTIVE)) {
+//            throw new InvalidTokenException("Token has expired or is invalid");
+//        }
+
         Sessions session = sessionOptional.get();
         session.setStatus(SessionStatus.INACTIVE);
         sessionRepository.save(session);
         return ResponseEntity.ok().build();
     }
-
     public UserDTO signUp(String email, String password) {
         User user = new User();
         user.setEmail(email);
@@ -116,8 +134,26 @@ public class AuthService {
         return UserDTO.from(savedUser);
     }
 
-    public SessionStatus validate(String token, UUID userId) {
+    public SessionStatus validate(String token, UUID userId) throws Exception {
         //TODO check expiry // Jwts Parser -> parse the encoded JWT token to read the claims
+        // Step 1: Parse the token
+//        MacAlgorithm alg = Jwts.SIG.HS256; // HS256 algo added for JWT
+//        SecretKey key = alg.key().build(); // generating the secret key
+//        SignatureAlgorithm sa = SignatureAlgorithm.HS256;
+//        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getEncoded(), sa.getJcaName());
+//        JwtParser claims = Jwts.parser()
+//                .verifyWith(secretKeySpec)
+//                .build();
+//        try {
+//            claims.parse(token);
+//        } catch (Exception e) {
+//            throw new Exception("Could not verify JWT token integrity!", e);
+//        }
+//        // Step 2: Check token expiry
+//        Date expiration = claims.getBody().getExpiration();
+//        if (expiration.before(new Date())) {
+//            throw new InvalidTokenException("Token has expired");
+//        }
 
         //verifying from DB if session exists
         Optional<Sessions> sessionOptional = sessionRepository.findAllByTokenAndUser_Id(token, userId);
